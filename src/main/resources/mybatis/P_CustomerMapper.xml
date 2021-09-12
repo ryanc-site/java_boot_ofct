@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="site.ryanc.ofct.mapper.P_customerMapper" >
+
+    <sql id="table_column" >
+        id,p_name,p_gender,p_marital,p_tel, p_id, p_id_add,p_hukou_add, p_dwell_add, p_work_add,p_job, p_m_in, p_y_in,
+        p_total_asset,p_total_debt, p_net_asset  , p_last_year_family_net_asset, ctime
+    </sql>
+
+    <select id="getById" resultType="site.ryanc.ofct.model.PersonCustomer" parameterType="java.lang.Integer" >
+        select
+        <include refid="table_column" />
+        from p_customer pc
+        where pc.id = #{id}
+    </select>
+
+    <insert id="save" parameterType="site.ryanc.ofct.model.PersonCustomer" useGeneratedKeys="true" keyProperty="id" >
+        insert into p_customer(id,p_name,p_gender,p_marital,p_tel, p_id, p_id_add,p_hukou_add, p_dwell_add, p_work_add,p_job, p_m_in, p_y_in,
+                               p_total_asset,p_total_debt, p_net_asset  , p_last_year_family_net_asset, ctime)
+        values (#{id},#{p_name},#{p_gender},#{p_marital},#{p_tel},#{p_id},#{p_id_add},#{p_hukou_add},#{p_dwell_add},#{p_work_add},
+                #{p_job},#{p_m_in},#{p_y_in},#{p_total_asset},#{p_total_debt},#{p_net_asset  },#{p_last_year_family_net_asset},#{ctime})
+    </insert>
+
+    <update id="update" parameterType="site.ryanc.ofct.model.PersonCustomer" >
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String" >
+        delete from p_customer
+        where id = #{id}
+    </delete>
+
+    <select id="selectList" resultType="site.ryanc.ofct.model.PersonCustomer" >
+        select
+        <include refid="table_column" />
+        from p_customer pc
+        <where >
+            <if test="id != null" >
+                and pc.id = #{id}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByKeyWord" resultType="site.ryanc.ofct.model.PersonCustomer">
+        select
+        <include refid="table_column" />
+        from p_customer pc
+        <where >
+            <if test="keyWord != null and keyWord !=''" >
+                and pc.p_name like '%${keyWord}%'
+            </if>
+            <if test="starTime != null and starTime !=''" >
+                and #{starTime} <![CDATA[ < ]]>    datetime(pc.ctime)
+            </if>
+            <if test="endTime != null and endTime !=''" >
+                and #{endTime} <![CDATA[ > ]]>    datetime(pc.ctime)
+            </if>
+        </where>
+    </select>
+</mapper>

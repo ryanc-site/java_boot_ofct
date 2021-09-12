@@ -1,0 +1,7 @@
+/* 待开发功能 */
+.to_be_dev{ width: 800px;height: 535px; background-image: url('../img/to_be_dev.png');background-repeat:no-repeat;background-size:100% 100%;}
+.to_be_dev_text{font-family: 'KaiTi';font-size: 18px;line-height: 40px;color: #1d577c;text-align: center;}
+
+.info_title{margin: 0px 0px 0px -130px}
+.info_title label{color:#41508b;font-weight: bold}
+.info_title hr{width: 100%;}

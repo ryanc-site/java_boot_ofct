@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="site.ryanc.ofct.mapper.LoanMapper" >
+
+    <sql id="table_column" >
+        id,loan_customer_type,loan_assure_type,loan_mode,loan_pay_mode,loan_repay_mode,loan_repay_person,
+        loan_person_carno,loan_account_open_bank,loan_for_use,loan_repay_src,loan_amount_upcase,loan_amount_lowcase,
+        loan_total_credit_amount,loan_rate_plus_point,loan_term,loan_start_date,loan_end_date,loan_m_rate,Loan_main_contractno,
+        loan_sub_contractno,loan_assure_person,loan_assure_person_gender,loan_person_address,loan_person_id,loan_this_start_date,
+        loan_this_end_date,loan_this_months,loan_special_prod_type,loan_borrower_type,loan_entrust_pay_date,loan_entrust_pay_amount,
+        loan_entrust_pay_payee,loan_entrust_pay_receipt_account,loan_entrust_pay_receipt_deposit,loan_apply_time,loan_review_person_num,
+        loan_approve_time,loan_contract_date,loan_steward_responsible,loan_risk_responsible,ctime
+    </sql>
+
+    <select id="getById" resultType="site.ryanc.ofct.model.LoanInfo" parameterType="java.lang.Integer" >
+        select
+        <include refid="table_column" />
+        from loan l
+        where l.id = #{id}
+    </select>
+
+    <insert id="save" parameterType="site.ryanc.ofct.model.PersonCustomer" useGeneratedKeys="true" keyProperty="id" >
+        insert into loan(
+            id,loan_customer_type,loan_assure_type,loan_mode,loan_pay_mode,loan_repay_mode,loan_repay_person,
+            loan_person_carno,loan_account_open_bank,loan_for_use,loan_repay_src,loan_amount_upcase,loan_amount_lowcase,
+            loan_total_credit_amount,loan_rate_plus_point,loan_term,loan_start_date,loan_end_date,loan_m_rate,Loan_main_contractno,
+            loan_sub_contractno,loan_assure_person,loan_assure_person_gender,loan_person_address,loan_person_id,loan_this_start_date,
+            loan_this_end_date,loan_this_months,loan_special_prod_type,loan_borrower_type,loan_entrust_pay_date,loan_entrust_pay_amount,
+            loan_entrust_pay_payee,loan_entrust_pay_receipt_account,loan_entrust_pay_receipt_deposit,loan_apply_time,loan_review_person_num,
+            loan_approve_time,loan_contract_date,loan_steward_responsible,loan_risk_responsible,ctime
+        )
+        values (
+            #{id},#{loan_customer_type},#{loan_assure_type},#{loan_mode},#{loan_pay_mode},#{loan_repay_mode},#{loan_repay_person},
+            #{loan_person_carno},#{loan_account_open_bank},#{loan_for_use},#{loan_repay_src},#{loan_amount_upcase},#{loan_amount_lowcase},
+            #{loan_total_credit_amount},#{loan_rate_plus_point},#{loan_term},#{loan_start_date},#{loan_end_date},#{loan_m_rate},
+            #{Loan_main_contractno},#{loan_sub_contractno},#{loan_assure_person},#{loan_assure_person_gender},#{loan_person_address},
+            #{loan_person_id},#{loan_this_start_date},#{loan_this_end_date},#{loan_this_months},#{loan_special_prod_type},#{loan_borrower_type},
+            #{loan_entrust_pay_date},#{loan_entrust_pay_amount},#{loan_entrust_pay_payee},#{loan_entrust_pay_receipt_account},#{loan_entrust_pay_receipt_deposit},
+            #{loan_apply_time},#{loan_review_person_num},#{loan_approve_time},#{loan_contract_date},#{loan_steward_responsible},#{loan_risk_responsible},#{ctime}
+        )
+    </insert>
+
+    <update id="update" parameterType="site.ryanc.ofct.model.LoanInfo" >
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String" >
+        delete from loan
+        where id = #{id}
+    </delete>
+
+    <select id="selectList" resultType="site.ryanc.ofct.model.LoanInfo" >
+        select
+        <include refid="table_column" />
+        from loan l
+        <where >
+            <if test="id != null" >
+                and l.id = #{id}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByKeyWord" resultType="site.ryanc.ofct.model.LoanInfo">
+        select
+        <include refid="table_column" />
+        from Loan l
+        <where >
+            <if test="keyWord != null and keyWord !=''" >
+                and l.loan_repay_person like '%${keyWord}%'
+            </if>
+            <if test="csr_type != null and csr_type !=''" >
+                and l.loan_customer_type = #{csr_type}
+            </if>
+        </where>
+    </select>
+</mapper>

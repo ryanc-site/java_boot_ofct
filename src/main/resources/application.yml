@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+
+logging:
+  level:
+    root: info
+    site.ryanc.ofct: debug
+
+spring:
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:./db/ofct.db
+    username:
+    password:
+
+  freemarker:
+    suffix: .ftl
+    charset: UTF-8
+    content-type: text/html; charset=utf-8
+    template-loader-path: classpath:/templates
+    request-context-attribute: req
+    settings:
+      classic_compatible: true    #解决页面报空指针问题
+      number_format: '0.##'       #数字格式化，两位小数点
+      tag_syntax: 'auto_detect'   #自定义标签语法
+  mvc:
+    static-path-pattern: /static/**
+
+mybatis:
+  mapper-locations: classpath*:mybatis/**/*Mapper.xml
+
