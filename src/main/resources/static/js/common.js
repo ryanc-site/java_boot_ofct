@@ -21,15 +21,15 @@ function displayMarital(marital){
         case '1':
             maritalDisplay = "已婚";
             break;
-        case '0':
+        case '2':
             maritalDisplay = "未婚";
             break;
-        case '2':
-            maritalDisplay = "离异";
-            break;
-        case '3':
-            maritalDisplay = "丧偶";
-            break;
+        // case '2':
+        //     maritalDisplay = "离异";
+        //     break;
+        // case '3':
+        //     maritalDisplay = "丧偶";
+        //     break;
     }
     return maritalDisplay;
 }

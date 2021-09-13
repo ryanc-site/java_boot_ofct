@@ -2,7 +2,7 @@
 <html class="x-admin-sm">
     <head>
         <meta charset="UTF-8">
-        <title>贷款管理</title>
+        <title>客户管理 - 个人客户</title>
         <meta name="renderer" content="webkit">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -17,8 +17,9 @@
         <div class="x-nav">
           <span class="layui-breadcrumb">
             <a href="">首页</a>
+            <a href="">客户管理</a>
             <a>
-              <cite>贷款管理</cite></a>
+              <cite>个人客户</cite></a>
           </span>
           <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
             <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
@@ -30,34 +31,35 @@
                         <div class="layui-card-body ">
                             <form class="layui-form layui-col-space5">
                                 <div class="layui-inline layui-show-xs-block">
-                                    <input type="text" name="repay_person" id="repay_person"  placeholder="还款人" autocomplete="off" class="layui-input">
+                                    <input class="layui-input date-format"  autocomplete="off" placeholder="开始日" name="s_ctime_start" id="s_ctime_start">
                                 </div>
                                 <div class="layui-inline layui-show-xs-block">
-                                    <button class="layui-btn" type="button"  id="s_btn" onclick="Loan_search();"><i class="layui-icon">&#xe615;</i></button>
+                                    <input class="layui-input date-format"  autocomplete="off" placeholder="截止日" name="s_ctime_end" id="s_ctime_end">
+                                </div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <input type="text" name="s_p_name" id="s_p_name"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <button class="layui-btn" type="button"  id="s_btn" onclick="csr_search();"><i class="layui-icon">&#xe615;</i></button>
                                 </div>
                             </form>
                         </div>
                         <div class="layui-card-header">
-                            <button class="layui-btn" onclick="xadmin.open('新增贷款','/loan/preadd',850,600,false)"><i class="layui-icon"></i>添加</button>
+                            <button class="layui-btn" onclick="xadmin.open('添加用户','/csr/preadd/person',850,600,false)"><i class="layui-icon"></i>添加</button>
                         </div>
                         <div class="layui-card-body layui-table-body layui-table-main">
-                            <table class="layui-table layui-form" id="loans">
+                            <table class="layui-table layui-form" id="p_customers">
                                 <thead>
                                 <tr>
                                     <th>序号</th>
                                     <th>姓名</th>
-                                    <th>客户类型</th>
-                                    <th>保证方式</th>
-                                    <th>贷款方式</th>
-                                    <th>支付方式</th>
-                                    <th>金额</th>
-                                    <th>利率</th>
-                                    <th>期限（月）</th>
-                                    <th>时间</th>
-                                    <th>操作</th>
-                                </tr>
+                                    <th>性别</th>
+                                    <th>电话</th>
+                                    <th>婚姻情况</th>
+                                    <th>创建时间</th>
+                                    <th>操作</th></tr>
                                 </thead>
-                                <tbody id="loan_tbody">
+                                <tbody id="p_customer_tbody">
 
                                 </tbody>
                             </table>
@@ -71,18 +73,19 @@
     <script>
         $(function () {
             //第一次，需要手动调用一下这个函数
-            pages(1, 10, "","");
+            pages(1, 10, "",null,null);
         })
 
         // 数据列表显示
-        function pages(page, limit, csr_type,keyword) {
+        function pages(page, limit, keyword,starTime,endTime) {
             //    发起异步请求
             $.ajax({
-                url: "/loan/query",
+                url: "/csr/query/person",
                 data: {
                     "keyword": keyword,
                     "page": page,
-                    "csr_type": csr_type,
+                    "starTime": starTime,
+                    "endTime": endTime,
                     "limit": limit
                 },
                 async: false,
@@ -91,24 +94,19 @@
                     if(data.code === "200"){
                         var html = "";
                         if(data.result.list.length !== 0){
-                            $.each(data.result.list, function (index, loan) {
+                            $.each(data.result.list, function (index, user) {
                                 html += "<tr>";
                                 html += "<td>" + index+ "</td>";
-                                html += "<td>" + loan.loan_repay_person + "</td>";
-                                html += "<td>" + display_customer(loan.loan_customer_type)+ "</td>";
-                                html += "<td>" + display_Loan_assure_type(loan.loan_assure_type) + "</td>";
-                                html += "<td>" + display_loan_mode(loan.loan_mode) + "</td>";
-                                html += "<td>" + display_Loan_pay_mode(loan.loan_pay_mode) + "</td>";
-                                html += "<td>" + loan.loan_amount_lowcase + "</td>";
-                                html += "<td>" + loan.loan_m_rate + "</td>";
-                                html += "<td>" + loan.loan_term + "</td>";
-                                html += "<td>" + loan.ctime + "</td>";
-                                // html += "<td><a class='layui-btn layui-btn-danger layui-btn-xs' lay-event='del' onclick='loan_del(\""+loan.id+"\")'>删除</a></td>";
+                                html += "<td>" + user.p_name + "</td>";
+                                html += "<td>" + displayGender(user.p_gender) + "</td>";
+                                html += "<td>" + user.p_tel + "</td>";
+                                html += "<td>" + displayMarital(user.p_marital) + "</td>";
+                                html += "<td>" + user.ctime + "</td>";
+                                // html += "<td><a class='layui-btn layui-btn-danger layui-btn-xs' lay-event='del' onclick='csr_del(\""+user.id+"\")'>删除</a></td>";
                                 html += "<td>" +
-                                            "<a title='查看' onclick='xadmin.open(\"贷款信息\",\"/loan/preadd\",850,600,false)' href='javascript:;'> <i class='layui-icon'>&#xe63c;</i></a>&nbsp;" +
-                                            "<a title='修改' onclick='xadmin.open(\"修改贷款信息\",\"/loan/preadd\",850,600,false)' href='javascript:;'> <i class='layui-icon'>&#xe642;</i></a>&nbsp;" +
-                                            "<a title='导出' onclick='loan_export(\""+loan.id+"\")' href='javascript:;'> <i class='layui-icon'>&#xe601;</i></a>&nbsp;" +
-                                            "<a title='删除' onclick='loan_del(\""+loan.id+"\")' href='javascript:;'> <i class='layui-icon'>&#xe640;</i></a>" +
+                                            "<a title='查看' onclick='xadmin.open(\"客户信息\",\"/csr/info/person/"+user.id+"\",850,600,false)' href='javascript:;'> <i class='layui-icon'>&#xe63c;</i></a>&nbsp;&nbsp;" +
+                                            "<a title='修改' onclick='xadmin.open(\"修改客户信息\",\"/csr/premodify/person/"+user.id+"\",850,600,false)' href='javascript:;'> <i class='layui-icon'>&#xe642;</i></a>&nbsp;&nbsp;" +
+                                            "<a title='删除' onclick='csr_del(\""+user.id+"\")' href='javascript:;'> <i class='layui-icon'>&#xe640;</i></a>" +
                                         "</td>";
                                 html += "</tr>";
                             });
@@ -116,11 +114,11 @@
                             laypage(data.result.total, data.result.pageNum, data.result.pageSize);
                             $('#pages').show();
                         }else{
-                            html = "<tr><td colspan='11' style='text-align:center;' >暂无数据</td></tr>"
+                            html = "<tr><td colspan='7' style='text-align:center;' >暂无数据</td></tr>"
                             $('#pages').hide();
                         }
 
-                        $("#loan_tbody").html(html);
+                        $("#p_customer_tbody").html(html);
                     }else{
                         console.log(data);
                     }
@@ -128,7 +126,7 @@
             });
         }
 
-        // 分页渲染
+        //这里直接在jquery的函数里面引用，因此不用加：th:inline="none"也是可以的
         function laypage(total, page, limit) {
             //分页回调函数，当每次点击分页组件的时候就会触发这个回调函数执行
             layui.use(['laypage','layer'], function () {
@@ -152,35 +150,8 @@
             })
         }
 
-
-        function loan_export(){
-            layui.use(['layer'], function () {
-                const layer = layui.layer;
-                layer.open({
-                    id: 1,
-                    type: 1,
-                    title: '文件导出路径',
-                    area: ['600px', '200px'],
-                    content: "<div class='layui-input-inline' style='margin: 7% 0px 0px 25%;'><input style='width: 300px;' type='text' id='export_dir' name='export_dir' placeholder='例如：D:/ofc_tool/export_data' autocomplete='off' class='layui-input'></div>",
-                    btn: ['确定', '取消'],
-                    yes: function (index, layero) {
-                        //获取输入框里面的值
-                        var closeContent = top.$("#area").val() || $("#area").val();
-                        if (closeContent) {
-                            console.log(closeContent);
-                        }
-                        layer.close(index);
-                        // 在这里提交数据
-                    },
-                    no: function (index, layero) {
-                        layer.close(index);
-                    }
-                });
-            });
-        }
-
         // 数据删除
-        function loan_del(id){
+        function csr_del(id){
             layer.open({
                 content: '确认删除？',
                 btnAlign: 'c',
@@ -188,18 +159,19 @@
                 btn: ['确定', '取消'],
                 yes: function() {
                     $.ajax({
-                        url: '/loan/del',
+                        url: '/csr/del',
                         async: false, //或false,是否异步
                         data: {
-                            "loan_id":id
+                            "csr_id":id
                         },
                         dataType: 'json',
                         success: function(data) {
                             if(data.code === "200"){
                                 layer.alert(data.msg);
-                                const csr_type = $("#csr_type").val();
-                                const keyword = $("#repay_person").val();
-                                pages(1, 10 ,csr_type,keyword);
+                                var starTime = $("#s_ctime_start").val();
+                                var endTime = $("#s_ctime_end").val();
+                                var keyword = $("#s_p_name").val();
+                                pages(1, 10 ,keyword,starTime,endTime);
                             }
                         },
                         error: function(data) {
@@ -210,10 +182,24 @@
             });
         }
 
-        function Loan_search(){
-            const csr_type = $("#csr_type").val();
-            const keyword = $("#repay_person").val();
-            pages(1, 10 ,csr_type,keyword);
+
+        layui.use('laydate', function(){
+            var laydate = layui.laydate;
+
+            //执行一个laydate实例
+            lay('.date-format').each(function(){
+                laydate.render({
+                    elem: this,
+                    type: 'datetime'
+                    ,trigger: 'click'
+                });
+            });
+        });
+        function csr_search(){
+            const starTime = $("#s_ctime_start").val();
+            const endTime = $("#s_ctime_end").val();
+            const keyword = $("#s_p_name").val();
+            pages(1, 10 ,keyword,starTime,endTime);
         }
 
     </script>

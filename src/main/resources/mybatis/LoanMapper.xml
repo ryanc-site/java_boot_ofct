@@ -12,7 +12,7 @@
         loan_approve_time,loan_contract_date,loan_steward_responsible,loan_risk_responsible,ctime
     </sql>
 
-    <select id="getById" resultType="site.ryanc.ofct.model.LoanInfo" parameterType="java.lang.Integer" >
+    <select id="getById" resultType="site.ryanc.ofct.model.LoanInfo" parameterType="java.lang.String" >
         select
         <include refid="table_column" />
         from loan l

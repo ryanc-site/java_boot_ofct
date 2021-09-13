@@ -1,8 +1,9 @@
 package site.ryanc.ofct.controller;
 
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,6 +25,7 @@ import java.util.Map;
  * @Desc 客户管理
  * @createTime 2021年09月09日 15:28:00
  */
+@Slf4j
 @Controller
 @RequestMapping("/csr")
 public class CustomerMgrController {
@@ -39,7 +41,7 @@ public class CustomerMgrController {
      */
     @RequestMapping("/query/person")
     @ResponseBody
-    public ResCom<PageInfo<PersonCustomer>> QueryCSRPerson(String keyword, Integer page, Integer limit,String starTime, String endTime) {
+    public ResCom<PageInfo<PersonCustomer>> QueryCSRPerson(String keyword, Integer page, Integer limit, String starTime, String endTime) {
         Map<String, Object> param = new HashMap<>();
         param.put("keyword", keyword);
         param.put("page", page);
@@ -59,7 +61,7 @@ public class CustomerMgrController {
      */
     @RequestMapping("/preadd/{csrType}")
     public String preAdd(@PathVariable String csrType) {
-        return "csr/add_person";
+        return "csr/person/add";
     }
 
 
@@ -71,9 +73,14 @@ public class CustomerMgrController {
      */
     @RequestMapping("/add/person")
     @ResponseBody
-    public String add(PersonCustomer p_customer) {
-        p_customerService.save(p_customer);
-        return "0";
+    public ResCom<String> p_add(PersonCustomer p_customer) {
+        try {
+            p_customerService.save(p_customer);
+        } catch (Exception e) {
+            log.error("【csr-add】：新增异常！e-msg:{}",e.getMessage());
+            return new ResCom<String>("500","【csr-add】：新增异常！e-msg:{}",null);
+        }
+        return new ResCom<String>("200","修改成功",null);
     }
 
 
@@ -91,4 +98,51 @@ public class CustomerMgrController {
     }
 
 
+    @RequestMapping("/info/{csrType}/{csrId}")
+    public String csrInfo(@PathVariable String csrType, @PathVariable String csrId, Model model) {
+        if ("person".equals(csrType)) {
+            PersonCustomer person_info = p_customerService.getById(csrId);
+            model.addAttribute("person_info",person_info);
+            return "/csr/person/info";
+        } else {
+            return "/to_be_dev";
+        }
+    }
+
+
+    /**
+     * 对应客户类型 - 客户数据 - 预修改
+     *
+     * @param csrType 客户类型
+     * @return 返回操作结果
+     */
+    @RequestMapping("/premodify/{csrType}/{csr_id}")
+    public String preModify(@PathVariable String csrType,@PathVariable String csr_id, Model model) {
+        if("person".equals(csrType)){
+            PersonCustomer modify_db_p = p_customerService.getById(csr_id);
+            model.addAttribute("db_p",modify_db_p);
+            return "csr/person/modify";
+        }else{
+            return "to_be_dev";
+        }
+    }
+
+
+    /**
+     * 修改 - 个人客户 - 数据
+     *
+     * @param p_customer 待修改数据
+     * @return 操作结果
+     */
+    @RequestMapping("/modify/person")
+    @ResponseBody
+    public ResCom<String> p_modify(PersonCustomer p_customer) {
+        try {
+            p_customerService.update(p_customer);
+        } catch (Exception e) {
+            log.error("【csr-modify】：csr_id:{},修改异常！e-msg:{}",p_customer.getId(),e.getMessage());
+            return new ResCom<String>("500","【csr-modify】：csr_id:{"+p_customer.getId()+"},修改异常！",null);
+        }
+        return new ResCom<String>("200","修改成功",null);
+    }
 }

@@ -7,7 +7,7 @@
         p_total_asset,p_total_debt, p_net_asset  , p_last_year_family_net_asset, ctime
     </sql>
 
-    <select id="getById" resultType="site.ryanc.ofct.model.PersonCustomer" parameterType="java.lang.Integer" >
+    <select id="getById" resultType="site.ryanc.ofct.model.PersonCustomer" parameterType="java.lang.String" >
         select
         <include refid="table_column" />
         from p_customer pc
@@ -15,13 +15,69 @@
     </select>
 
     <insert id="save" parameterType="site.ryanc.ofct.model.PersonCustomer" useGeneratedKeys="true" keyProperty="id" >
-        insert into p_customer(id,p_name,p_gender,p_marital,p_tel, p_id, p_id_add,p_hukou_add, p_dwell_add, p_work_add,p_job, p_m_in, p_y_in,
-                               p_total_asset,p_total_debt, p_net_asset  , p_last_year_family_net_asset, ctime)
-        values (#{id},#{p_name},#{p_gender},#{p_marital},#{p_tel},#{p_id},#{p_id_add},#{p_hukou_add},#{p_dwell_add},#{p_work_add},
-                #{p_job},#{p_m_in},#{p_y_in},#{p_total_asset},#{p_total_debt},#{p_net_asset  },#{p_last_year_family_net_asset},#{ctime})
+        insert into p_customer(
+            id,p_name,p_gender,p_marital,p_tel, p_id, p_id_add,p_hukou_add, p_dwell_add, p_work_add,p_job, p_m_in, p_y_in,
+            p_total_asset,p_total_debt, p_net_asset  , p_last_year_family_net_asset, ctime
+        )
+        values (
+            #{id},#{p_name},#{p_gender},#{p_marital},#{p_tel},#{p_id},#{p_id_add},#{p_hukou_add},#{p_dwell_add},#{p_work_add},
+            #{p_job},#{p_m_in},#{p_y_in},#{p_total_asset},#{p_total_debt},#{p_net_asset  },#{p_last_year_family_net_asset},#{ctime}
+        )
     </insert>
 
     <update id="update" parameterType="site.ryanc.ofct.model.PersonCustomer" >
+        update p_customer
+        <set >
+            <if test="p_name != null and p_name != ''" >
+                p_name = #{p_name},
+            </if>
+            <if test="p_gender != null and p_gender != ''" >
+                p_gender = #{p_gender},
+            </if>
+            <if test="p_marital != null and p_marital != ''" >
+                p_marital = #{p_marital},
+            </if>
+            <if test="p_tel != null and p_tel != ''" >
+                p_tel = #{p_tel},
+            </if>
+            <if test="p_id != null and p_id != ''" >
+                p_id = #{p_id},
+            </if>
+            <if test="p_id_add != null and p_id_add != ''" >
+                p_id_add = #{p_id_add},
+            </if>
+            <if test="p_hukou_add != null and p_hukou_add != ''" >
+                p_hukou_add = #{p_hukou_add},
+            </if>
+            <if test="p_dwell_add != null and p_dwell_add != ''" >
+                p_dwell_add = #{p_dwell_add},
+            </if>
+            <if test="p_work_add != null and p_work_add != ''" >
+                p_work_add = #{p_work_add},
+            </if>
+            <if test="p_job != null and p_job != ''" >
+                p_job = #{p_job},
+            </if>
+            <if test="p_m_in != null and p_m_in != ''" >
+                p_m_in = #{p_m_in},
+            </if>
+            <if test="p_y_in != null and p_y_in != ''" >
+                p_y_in = #{p_y_in},
+            </if>
+            <if test="p_total_asset != null and p_total_asset != ''" >
+                p_total_asset = #{p_total_asset},
+            </if>
+            <if test="p_total_debt != null and p_total_debt != ''" >
+                p_total_debt = #{p_total_debt},
+            </if>
+            <if test="p_net_asset != null and p_net_asset != ''" >
+                p_net_asset = #{p_net_asset},
+            </if>
+            <if test="p_last_year_family_net_asset != null and p_last_year_family_net_asset != ''" >
+                p_last_year_family_net_asset = #{p_last_year_family_net_asset},
+            </if>
+        </set>
+        where id = #{id}
     </update>
 
     <delete id="delete" parameterType="java.lang.String" >

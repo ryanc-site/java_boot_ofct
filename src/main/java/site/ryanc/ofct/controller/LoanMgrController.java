@@ -30,7 +30,7 @@ public class LoanMgrController {
     @Autowired
     private LoanService loanService;
 
-    /**
+    /** 常量
      * 查询对应客户类型 - 客户列表
      *
      * @return 返回 客户数据

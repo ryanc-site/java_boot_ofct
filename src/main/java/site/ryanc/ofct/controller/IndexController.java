@@ -71,7 +71,7 @@ public class IndexController {
         ModelAndView mav = new ModelAndView("to_be_dev");
         switch (serviceType){
             case "csr_person":{
-                mav = new ModelAndView("csr/person");
+                mav = new ModelAndView("csr/person/list");
                 break;
             }
             case "loan_mgr":{
