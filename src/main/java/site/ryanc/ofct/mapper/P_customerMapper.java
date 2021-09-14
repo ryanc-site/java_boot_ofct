@@ -1,6 +1,7 @@
 package site.ryanc.ofct.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import site.ryanc.ofct.mapper.common.BaseMapper;
 import site.ryanc.ofct.model.PersonCustomer;
 
@@ -20,4 +21,6 @@ import java.util.List;
 public interface P_customerMapper extends BaseMapper<PersonCustomer, String> {
 
     List<PersonCustomer> selectByKeyWord(String keyWord, String starTime, String endTime);
+
+    PersonCustomer selectByCsrName(@Param("csr_name") String csr_name);
 }

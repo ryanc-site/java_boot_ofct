@@ -37,7 +37,7 @@
                     <a onclick="xadmin.open('弹出指定宽高','http://www.baidu.com',500,300)">
                         <i class="iconfont">&#xe6a8;</i>弹出指定宽高</a></dd>
                 <dd>
-                    <a onclick="xadmin.add_tab('在tab打开','loan.ftl')">
+                    <a onclick="xadmin.add_tab('在tab打开','info.ftl')">
                         <i class="iconfont">&#xe6b8;</i>在tab打开</a></dd>
                 <dd>
                     <a onclick="xadmin.add_tab('在tab打开刷新','member-del.html',true)">

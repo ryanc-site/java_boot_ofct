@@ -112,4 +112,11 @@
             </if>
         </where>
     </select>
+    <select id="selectByCsrName" resultType="site.ryanc.ofct.model.PersonCustomer">
+        select
+            <include refid="table_column" />
+        from p_customer pc
+        where 1 = 1 and  pc.p_name = #{csr_name}
+        limit 1
+    </select>
 </mapper>

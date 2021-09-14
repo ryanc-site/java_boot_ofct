@@ -46,4 +46,9 @@ public class P_customerServiceImpl extends BaseServiceImpl<PersonCustomer,String
         return new PageInfo(p_customerMapper.selectByKeyWord(keyWord,starTime,endTime));
     }
 
+    @Override
+    public PersonCustomer getByCsrName(String csr_name) {
+        return p_customerMapper.selectByCsrName(csr_name);
+    }
+
 }

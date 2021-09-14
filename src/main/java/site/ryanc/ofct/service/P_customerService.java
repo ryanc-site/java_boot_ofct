@@ -25,4 +25,11 @@ public interface P_customerService extends BaseService<PersonCustomer, String> {
      * @return 数据分页信息
      */
     PageInfo<PersonCustomer> selectByKeyWord(Map<String, Object> paraMap);
+
+    /**
+     * 依据客户名称 - 查询 - 客户信息
+     * @param csr_name 客户名称
+     * @return 客户信息
+     */
+    PersonCustomer getByCsrName(String csr_name);
 }

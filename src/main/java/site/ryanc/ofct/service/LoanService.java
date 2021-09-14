@@ -25,4 +25,11 @@ public interface LoanService extends BaseService<LoanInfo, String> {
      * @return 数据分页信息
      */
     PageInfo<LoanInfo> selectByKeyWord(Map<String, Object> paraMap);
+
+    /**
+     * 导出对应的贷款文档 - 到指定目录
+     * @param csrForLoanFromDb 贷款信息
+     * @param loan_db 客户信息
+     */
+    void export(PersonCustomer csrForLoanFromDb, LoanInfo loan_db, String exportDir) throws Exception;
 }
