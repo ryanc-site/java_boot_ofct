@@ -39,7 +39,7 @@
                     <select id="p_gender" name="p_gender"  class="valid" lay-verify="required">
                         <option value="">--请选择--</option>
                         <#if db_p.p_gender == "1">
-                            <option value="1" selected}>男</option>
+                            <option value="1" selected>男</option>
                             <option value="0" >女</option>
                         <#else>
                             <option value="1" >男</option>

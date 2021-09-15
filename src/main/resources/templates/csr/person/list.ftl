@@ -46,6 +46,7 @@
                         </div>
                         <div class="layui-card-header">
                             <button class="layui-btn" onclick="xadmin.open('添加用户','/csr/preadd/person',850,600,false)"><i class="layui-icon"></i>添加</button>
+                            <button class="layui-btn" onclick="csr_import()"><i class="layui-icon"></i>导入</button>
                         </div>
                         <div class="layui-card-body layui-table-body layui-table-main">
                             <table class="layui-table layui-form" id="p_customers">
@@ -182,7 +183,7 @@
             });
         }
 
-
+        // 日期组件
         layui.use('laydate', function(){
             var laydate = layui.laydate;
 
@@ -195,11 +196,57 @@
                 });
             });
         });
+
+        // 客户查询
         function csr_search(){
             const starTime = $("#s_ctime_start").val();
             const endTime = $("#s_ctime_end").val();
             const keyword = $("#s_p_name").val();
             pages(1, 10 ,keyword,starTime,endTime);
+        }
+
+        function csr_import(){
+            layui.use(['layer'], function () {
+                const layer = layui.layer;
+                layer.open({
+                    id: 1,
+                    type: 1,
+                    title: '导入文件选择',
+                    area: ['600px', '200px'],
+                    content: "<div class='layui-input-inline' style='margin: 7% 0px 0px 25%;'><form id='csr_import_form' enctype='multipart/form-data'><input style='width: 300px;' type='file' id='import_file' name='import_file' placeholder='点击选取客户信息调查报告' autocomplete='off' class='layui-input'></form></div>",
+                    btn: ['确定', '取消'],
+                    yes: function (index, layero) {
+                        //    发起异步请求
+                        $.ajax({
+                            url: "/csr/import/person",
+                            type: 'POST',
+                            cache: false,
+                            data: new FormData($('#csr_import_form')[0]),
+                            processData: false,
+                            contentType: false,
+                            dataType:"json",
+                            beforeSend: function(){
+                                uploading = true;
+                            },
+                            success : function(data) {
+                                layer.alert(data.msg, {
+                                    icon: 6
+                                });
+                                uploading = false;
+                                return false;
+                            }
+                        });
+                        layer.close(index);
+                        const starTime = $("#s_ctime_start").val();
+                        const endTime = $("#s_ctime_end").val();
+                        const keyword = $("#s_p_name").val();
+                        pages(1, 10 ,keyword,starTime,endTime);
+                    },
+                    no: function (index, layero) {
+                        layer.close(index);
+                    }
+                });
+            });
         }
 
     </script>

@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import site.ryanc.ofct.model.PersonCustomer;
 import site.ryanc.ofct.model.ResCom;
 import site.ryanc.ofct.service.P_customerService;
@@ -152,5 +153,24 @@ public class CustomerMgrController {
             return new ResCom<String>("500", "【csr-modify】：csr_id:{" + p_customer.getId() + "},修改异常！", null);
         }
         return new ResCom<String>("200", "修改成功", null);
+    }
+
+
+    /**
+     * 导入 - 个人客户 - 数据
+     *
+     * @param csr_type 客户类型
+     * @return 操作结果
+     */
+    @RequestMapping("/import/{csr_type}")
+    @ResponseBody
+    public ResCom<String> csrImport(@PathVariable String csr_type, MultipartFile import_file) {
+        try {
+            System.out.println("执行word内容抓取工作");
+        } catch (Exception e) {
+            log.error("【csr-import】：导入异常！e-msg:{}", e.getMessage());
+            return new ResCom<String>("500", "【csr-import】：导入异常！e-msg:{}", null);
+        }
+        return new ResCom<String>("200", "导入成功", null);
     }
 }

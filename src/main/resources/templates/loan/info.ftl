@@ -277,7 +277,7 @@
                     </div>
                     <!--</editor-fold>-->
                     <div class="layui-form-item">
-                        <div class="layui-input-block" style="margin-left: 250px;">
+                        <div class="layui-input-block" style="margin-left: 160px;">
                             <button class="layui-btn" lay-submit="" lay-filter="add">确  定</button>
                         </div>
                     </div>
