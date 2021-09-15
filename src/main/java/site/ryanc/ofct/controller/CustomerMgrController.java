@@ -77,10 +77,10 @@ public class CustomerMgrController {
         try {
             p_customerService.save(p_customer);
         } catch (Exception e) {
-            log.error("【csr-add】：新增异常！e-msg:{}",e.getMessage());
-            return new ResCom<String>("500","【csr-add】：新增异常！e-msg:{}",null);
+            log.error("【csr-add】：新增异常！e-msg:{}", e.getMessage());
+            return new ResCom<String>("500", "【csr-add】：新增异常！e-msg:{}", null);
         }
-        return new ResCom<String>("200","修改成功",null);
+        return new ResCom<String>("200", "修改成功", null);
     }
 
 
@@ -98,11 +98,19 @@ public class CustomerMgrController {
     }
 
 
+    /**
+     * 查看对应 - 客户类型的 - 客户信息
+     *
+     * @param csrType 客户类型
+     * @param csrId   客户id
+     * @param model   数据model
+     * @return 客户信息view
+     */
     @RequestMapping("/info/{csrType}/{csrId}")
     public String csrInfo(@PathVariable String csrType, @PathVariable String csrId, Model model) {
         if ("person".equals(csrType)) {
             PersonCustomer person_info = p_customerService.getById(csrId);
-            model.addAttribute("person_info",person_info);
+            model.addAttribute("person_info", person_info);
             return "/csr/person/info";
         } else {
             return "/to_be_dev";
@@ -117,12 +125,12 @@ public class CustomerMgrController {
      * @return 返回操作结果
      */
     @RequestMapping("/premodify/{csrType}/{csr_id}")
-    public String preModify(@PathVariable String csrType,@PathVariable String csr_id, Model model) {
-        if("person".equals(csrType)){
+    public String preModify(@PathVariable String csrType, @PathVariable String csr_id, Model model) {
+        if ("person".equals(csrType)) {
             PersonCustomer modify_db_p = p_customerService.getById(csr_id);
-            model.addAttribute("db_p",modify_db_p);
+            model.addAttribute("db_p", modify_db_p);
             return "csr/person/modify";
-        }else{
+        } else {
             return "to_be_dev";
         }
     }
@@ -140,9 +148,9 @@ public class CustomerMgrController {
         try {
             p_customerService.update(p_customer);
         } catch (Exception e) {
-            log.error("【csr-modify】：csr_id:{},修改异常！e-msg:{}",p_customer.getId(),e.getMessage());
-            return new ResCom<String>("500","【csr-modify】：csr_id:{"+p_customer.getId()+"},修改异常！",null);
+            log.error("【csr-modify】：csr_id:{},修改异常！e-msg:{}", p_customer.getId(), e.getMessage());
+            return new ResCom<String>("500", "【csr-modify】：csr_id:{" + p_customer.getId() + "},修改异常！", null);
         }
-        return new ResCom<String>("200","修改成功",null);
+        return new ResCom<String>("200", "修改成功", null);
     }
 }

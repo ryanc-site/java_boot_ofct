@@ -326,7 +326,7 @@
             //监听提交
             form.on('submit(add)',
                 function(data) {
-                    var isOk;
+                    let isOk, msg;
                     $.ajax({
                         url:'/loan/add',
                         method:'post',
@@ -334,7 +334,8 @@
                         async: false,
                         dataType:'JSON',
                         success:function(res){
-                            if(res === 0){
+                            msg = res.msg;
+                            if(res.code === "200"){
                                 isOk = true;
                             }else{
                                 isOk = false;
@@ -346,7 +347,7 @@
                     });
 
                     if(isOk){
-                        layer.alert("添加成功", {
+                        layer.alert(msg, {
                             icon: 6
                         },
                         function() {

@@ -19,7 +19,8 @@
 <body>
 <div class="layui-fluid" >
     <div id="loan_mgr_Form" class="modal layui-form" align="center" >
-        <form method="post" class="smart-green">
+        <form method="post" class="smart-green layui-form">
+            <input type="hidden" name="id" id="csr_id" value="${loan_db.id}" />
                 <!--<editor-fold desc="贷款管理 - 个人 -> 保证 -> 一次性 -> 自主支付">-->
                 <!--<editor-fold desc="贷款管理 - 类别筛选">-->
                 <div class="info_title">
@@ -30,35 +31,65 @@
                     <label>客户类型 :</label>
                     <select id="loan_customer_type" name="loan_customer_type" lay-verify="required" >
                         <option value="">--请选择--</option>
-                        <option value="1" selected >个人</option>
-                        <option value="0">公司</option>
+                        <#if loan_db.loan_customer_type == 1>
+                            <option value="1" selected >个人</option>
+                            <option value="0">公司</option>
+                        </#if>
+                        <#if loan_db.loan_customer_type == 0>
+                            <option value="1"  >个人</option>
+                            <option value="0" selected>公司</option>
+                        </#if>
                     </select>
                 </div>
                 <div data_type="input" class="loan_assure_type_div" style="width:165px" >
                     <label>保证方式 :</label>
                     <select id="loan_assure_type" name="loan_assure_type" lay-verify="required" >
                         <option value="">--请选择--</option>
-                        <option value="1" >抵押</option>
-                        <option value="2" selected>保证</option>
-                        <option value="3">信用</option>
-                        <option value="4">质押</option>
+                        <#if loan_db.loan_assure_type == 2>
+                            <option value="1" >抵押</option>
+                            <option value="2" selected>保证</option>
+                            <option value="3">信用</option>
+                            <option value="4">质押</option>
+                        </#if>
+                        <#if loan_db.loan_customer_type != 2>
+                            <option value="1" >抵押</option>
+                            <option value="2" >保证</option>
+                            <option value="3">信用</option>
+                            <option value="4">质押</option>
+                        </#if>
+
                     </select>
                 </div>
                 <div data_type="input" class="loan_mode_div" style="width:165px" >
                     <label>贷款方式 :</label>
                     <select id="loan_mode" name="loan_mode" lay-verify="required"  >
                         <option value="">--请选择--</option>
-                        <option value="1" selected>一次性</option>
-                        <option value="2">循环</option>
-                        <option value="3">特色产品</option>
+                        <#if loan_db.loan_mode == 1>
+                            <option value="1" selected>一次性</option>
+                            <option value="2">循环</option>
+                            <option value="3">特色产品</option>
+                        </#if>
+                        <#if loan_db.loan_mode != 1>
+                            <option value="1" >一次性</option>
+                            <option value="2">循环</option>
+                            <option value="3">特色产品</option>
+                        </#if>
+
                     </select>
                 </div>
                 <div data_type="input" class="loan_pay_mode_div" style="width:165px" >
                     <label>支付方式 :</label>
                     <select id="loan_pay_mode" name="loan_pay_mode" lay-verify="required"  >
                         <option value="">--请选择--</option>
-                        <option value="1" selected>自主支付</option>
-                        <option value="2">委托支付</option>
+                        <#if loan_db.loan_pay_mode == 1>
+                            <option value="1" selected>自主支付</option>
+                            <option value="2">委托支付</option>
+                        </#if>
+                        <#if loan_db.loan_customer_type != 1>
+                            <option value="1">自主支付</option>
+                            <option value="2">委托支付</option>
+                        </#if>
+
                     </select>
                 </div>
                 <div style="width: 660px;height: 50px;margin-top:35px">
@@ -66,7 +97,7 @@
                 </div>
                 <!--</editor-fold>-->
 
-                <div id="loan_form_info" style="display: none;margin-top:-20px">
+                <div id="loan_form_info" style="margin-top:-20px">
                     <br/>
                     <!--<editor-fold desc="贷款管理 - 贷款信息">-->
                     <div class="info_title">
@@ -77,74 +108,82 @@
                         <label>还款方式 :</label>
                         <select id="loan_repay_mode" name="loan_repay_mode" lay-verify="required"  >
                             <option value="">--请选择--</option>
-                            <option value="1" selected>等额本息</option>
-                            <option value="2">等额本金</option>
-                            <option value="3">按月结息</option>
-                            <option value="4">到期还本、计划还款</option>
+                            <#if loan_db.loan_pay_mode == 1>
+                                <option value="1" selected>等额本息</option>
+                                <option value="2">等额本金</option>
+                                <option value="3">按月结息</option>
+                                <option value="4">到期还本、计划还款</option>
+                            </#if>
+                            <#if loan_db.loan_customer_type != 1>
+                                <option value="1" >等额本息</option>
+                                <option value="2">等额本金</option>
+                                <option value="3">按月结息</option>
+                                <option value="4">到期还本、计划还款</option>
+                            </#if>
                         </select>
                     </div>
                     <div data_type="input" class="loan_repay_person_div" style="width:200px;margin: -15px 0px 0px -100px;">
                         <label>借款人 :</label>
-                        <input id="loan_repay_person" lay-verify="required" lay-verify="required"  type="text" name="loan_repay_person" value="贾斯汀" />
+                        <input id="loan_repay_person" lay-verify="required" lay-verify="required"  type="text" name="loan_repay_person" value="${loan_db.loan_repay_person}" />
                     </div>
                     <div data_type="input" class="loan_person_carno_div" style="width:340px;">
                         <label>借款人卡号 :</label>
-                        <input id="loan_person_carno" lay-verify="required"  type="text" name="loan_person_carno" value="6228888888888888888" />
+                        <input id="loan_person_carno" lay-verify="required"  type="text" name="loan_person_carno" value="${loan_db.loan_person_carno}" />
                     </div>
                     <div data_type="input" class="loan_account_open_bank_div" style="width:460px;">
                         <label>放款账户开户行 :</label>
-                        <input id="loan_account_open_bank" lay-verify="required"  type="text" name="loan_account_open_bank" value="沧州农商行" />
+                        <input id="loan_account_open_bank" lay-verify="required"  type="text" name="loan_account_open_bank" value="${loan_db.loan_account_open_bank}" />
                     </div>
                     <div data_type="input" class="loan_for_use_div" style="width:200px;">
                         <label>借款用途 :</label>
-                        <input id="loan_for_use" lay-verify="required"  type="text" name="loan_for_use" value="买iphone13" />
+                        <input id="loan_for_use" lay-verify="required"  type="text" name="loan_for_use" value="${loan_db.loan_for_use}" />
                     </div>
                     <div data_type="input" class="loan_repay_src_div" style="width:200px;">
                         <label>还款来源 :</label>
-                        <input id="loan_repay_src" lay-verify="required"  type="text" name="loan_repay_src" value="经营收入" />
+                        <input id="loan_repay_src" lay-verify="required"  type="text" name="loan_repay_src" value="${loan_db.loan_repay_src}" />
                     </div>
                     <div data_type="input" class="loan_amount_upcase_div" style="width:340px;">
                         <label>贷款金额大写 :</label>
-                        <input id="loan_amount_upcase" lay-verify="required"  type="text" name="loan_amount_upcase" value="壹万伍仟元" />
+                        <input id="loan_amount_upcase" lay-verify="required"  type="text" name="loan_amount_upcase" value="${loan_db.loan_amount_upcase}" />
                     </div>
                     <div data_type="input" class="loan_amount_lowcase_div" style="width:215px;">
                         <label>贷款金额小写 :</label>
-                        <input id="loan_amount_lowcase" lay-verify="required"  type="text" name="loan_amount_lowcase" value="15000" />
+                        <input id="loan_amount_lowcase" lay-verify="required"  type="text" name="loan_amount_lowcase" value="${loan_db.loan_amount_lowcase}"/>
                     </div>
                     <div data_type="input" class="loan_total_credit_amount_div" style="width:215px;">
                         <label>总授信金额 :</label>
-                        <input id="loan_total_credit_amount" lay-verify="required"  type="text" name="loan_total_credit_amount" value="15000" />
+                        <input id="loan_total_credit_amount" lay-verify="required"  type="text" name="loan_total_credit_amount" value="${loan_db.loan_total_credit_amount}" />
                         <span>元</span>
                     </div>
                     <div data_type="input" class="loan_rate_plus_point_div" style="width:215px;">
                         <label>贷款利率加点 :</label>
-                        <input id="loan_rate_plus_point" lay-verify="required"  type="text" name="loan_rate_plus_point" value="300" />
+                        <input id="loan_rate_plus_point" lay-verify="required"  type="text" name="loan_rate_plus_point" value="${loan_db.loan_rate_plus_point}" />
                     </div>
                     <div data_type="input" class="loan_term_div" style="width:215px;">
                         <label>贷款期限 :</label>
-                        <input id="loan_term" type="text"  lay-verify="required" name="loan_term" value="24" />
+                        <input id="loan_term" type="text"  lay-verify="required" name="loan_term" value="${loan_db.loan_term}" />
                         <span>个月</span>
                     </div>
                     <div data_type="input" class="loan_start_date_div" style="width:245px;">
                         <label>贷款起始日期 :</label>
-                        <input id="loan_start_date" lay-verify="required"  class="date-format" type="text" name="loan_start_date" value="2021年10月28日" />
+                        <input id="loan_start_date" lay-verify="required"  class="date-format" type="text" name="loan_start_date" value="${loan_db.loan_start_date}" />
                     </div>
                     <div data_type="input" class="loan_end_date_div" style="width:245px;">
                         <label>贷款终止日期 :</label>
-                        <input id="loan_end_date" lay-verify="required"  class="date-format" type="text" name="loan_end_date" value="2023年10月28日" />
+                        <input id="loan_end_date" lay-verify="required"  class="date-format" type="text" name="loan_end_date" value="${loan_db.loan_end_date}" />
                     </div>
                     <div data_type="input" class="loan_m_rate_div" style="width:215px;">
                         <label>贷款月利率 :</label>
-                        <input id="loan_m_rate" lay-verify="required"  type="text" name="loan_m_rate" value="5.708" />
+                        <input id="loan_m_rate" lay-verify="required"  type="text" name="loan_m_rate" value="${loan_db.loan_m_rate}" />
                         <span>‰</span>
                     </div>
                     <div data_type="input" class="loan_main_contractno_div" style="width:215px;">
                         <label>主合同号 :</label>
-                        <input id="loan_main_contractno" lay-verify="required"  type="text" name="loan_main_contractno" value="ht-202108281" />
+                        <input id="loan_main_contractno" lay-verify="required"  type="text" name="loan_main_contractno" value="${loan_db.loan_main_contractno}" />
                     </div>
                     <div data_type="input" class="loan_sub_contractno_div" style="width:215px;">
                         <label>从合同号 :</label>
-                        <input id="loan_sub_contractno" lay-verify="required"  type="text" name="loan_sub_contractno" value="20210828202031" />
+                        <input id="loan_sub_contractno" lay-verify="required"  type="text" name="loan_sub_contractno" value="${loan_db.loan_sub_contractno}" />
                     </div>
                     <!--</editor-fold>-->
                     <br/>
@@ -157,94 +196,107 @@
                         <label>保证人性别 :</label>
                         <select id="loan_assure_person_gender" name="loan_assure_person_gender" >
                             <option value="-1" >--请选择--</option>
-                            <option value="1" selected >男</option>
-                            <option value="0">女</option>
+                            <#if loan_db.loan_assure_person_gender == 1>
+                                <option value="1" selected >男</option>
+                                <option value="0">女</option>
+                            </#if>
+                            <#if loan_db.loan_assure_person_gender == 0>
+                                <option value="1"  >男</option>
+                                <option value="0" selected>女</option>
+                            </#if>
+
                         </select>
                     </div>
 
                     <div data_type="input" class="loan_assure_person_div" style="width:200px;">
                         <label>保证人姓名 :</label>
-                        <input id="loan_assure_person" type="text" name="loan_assure_person" value="比伯" />
+                        <input id="loan_assure_person" type="text" name="loan_assure_person"value="${loan_db.loan_assure_person}" />
                     </div>
                     <div data_type="input" class="loan_person_address_div" style="width:340px;">
                         <label>保证人住址 :</label>
-                        <input id="loan_person_address" type="text" name="loan_person_address" value="北京簋街" />
+                        <input id="loan_person_address" type="text" name="loan_person_address" value="${loan_db.loan_person_address}" />
                     </div>
                     <div data_type="input" class="loan_person_id_div" style="width:460px;">
                         <label>保证人身份证 :</label>
-                        <input id="loan_person_id" type="text" name="loan_person_id" value="652222222222222222" />
+                        <input id="loan_person_id" type="text" name="loan_person_id" value="${loan_db.loan_person_id}" />
                     </div>
                     <!--</editor-fold>-->
                     <br/>
                     <!--<editor-fold desc="贷款管理 - 其他信息">-->
-                    <div id="loan_other_info" style="display:none;" >
+                    <div id="loan_other_info" style="" >
                         <div class="info_title">
                             <label>其他信息</label>
                             <hr>
                         </div>
                         <!--<editor-fold desc="贷款方式：循环方式 => 附加项">-->
-                        <div id="other_loan_mode_2" style="display:none;">
-                            <div data_type="input" class="loan_this_start_date_div" style="width:225px;">
-                                <label>本次借款起始日期 :</label>
-                                <input id="loan_this_start_date" class="date-format" type="text" name="loan_this_start_date" value="2021年10月28日" />
+                        <#if loan_info.loan_mode == 2>
+                            <div id="other_loan_mode_2" style="">
+                                <div data_type="input" class="loan_this_start_date_div" style="width:225px;">
+                                    <label>本次借款起始日期 :</label>
+                                    <input id="loan_this_start_date" class="date-format" type="text" name="loan_this_start_date" value="${loan_db.loan_this_start_date}" />
+                                </div>
+                                <div data_type="input" class="loan_this_end_date_div" style="width:225px;">
+                                    <label>本次借款终止日期 :</label>
+                                    <input id="loan_this_end_date" class="date-format" type="text" name="loan_this_end_date" value="${loan_db.loan_this_end_date}" />
+                                </div>
+                                <div data_type="input" class="loan_this_months_div" style="width:215px;">
+                                    <label>本次借款月数 :</label>
+                                    <input id="loan_this_months" type="text" name="loan_this_months" value="${loan_db.loan_this_months}" />
+                                    <span>个月</span>
+                                </div>
                             </div>
-                            <div data_type="input" class="loan_this_end_date_div" style="width:225px;">
-                                <label>本次借款终止日期 :</label>
-                                <input id="loan_this_end_date" class="date-format" type="text" name="loan_this_end_date" value="2022年10月28日" />
-                            </div>
-                            <div data_type="input" class="loan_this_months_div" style="width:215px;">
-                                <label>本次借款月数 :</label>
-                                <input id="loan_this_months" type="text" name="loan_this_months" value="12" />
-                                <span>个月</span>
-                            </div>
-                        </div>
+                        </#if>
                         <!--</editor-fold>-->
                         <!--<editor-fold desc="贷款方式：特色产品 => 附加项">-->
-                        <div id="other_loan_mode_3" style="display:none;">
-                            <div data_type="input" class="loan_special_prod_type_div" style="width:235px" >
-                                <label>特色产品种类 :</label>
-                                <select id="loan_special_prod_type" name="loan_special_prod_type" >
-                                    <option value="-1">--请选择--</option>
-                                    <option value="1" selected>商贷宝</option>
-                                    <option value="2">消贷宝</option>
-                                    <option value="3">农贸宝</option>
-                                </select>
+                        <#if loan_info.loan_mode == 3>
+                            <div id="other_loan_mode_3" style="">
+                                <div data_type="input" class="loan_special_prod_type_div" style="width:235px" >
+                                    <label>特色产品种类 :</label>
+                                    <select id="loan_special_prod_type" name="loan_special_prod_type" >
+                                        <option value="-1">--请选择--</option>
+                                        <option value="1" selected>商贷宝</option>
+                                        <option value="2">消贷宝</option>
+                                        <option value="3">农贸宝</option>
+                                    </select>
+                                </div>
+                                <div data_type="input" class="loan_borrower_type_div" style="width:235px;margin: -40px 0px 0px 85px;" >
+                                    <label>借款人类型 :</label>
+                                    <select id="loan_borrower_type" name="loan_borrower_type" >
+                                        <option value="-1">--请选择--</option>
+                                        <option value="1" selected>农户</option>
+                                        <option value="2">自然人</option>
+                                        <option value="3">个体工商户</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div data_type="input" class="loan_borrower_type_div" style="width:235px;margin: -40px 0px 0px 85px;" >
-                                <label>借款人类型 :</label>
-                                <select id="loan_borrower_type" name="loan_borrower_type" >
-                                    <option value="-1">--请选择--</option>
-                                    <option value="1" selected>农户</option>
-                                    <option value="2">自然人</option>
-                                    <option value="3">个体工商户</option>
-                                </select>
-                            </div>
-                        </div>
+                        </#if>
                         <!--</editor-fold>-->
                         <!--<editor-fold desc="支付方式：委托支付 => 附加项">-->
-                        <div id="other_loan_pay_mode_2" style="display:none;">
-                            <div data_type="input" class="loan_entrust_pay_date_div" style="width:223px;margin-top: 20px;">
-                                <label>委托支付日期 :</label>
-                                <input id="loan_entrust_pay_date" type="text" name="loan_entrust_pay_date" value="2021/10/28" />
+                        <#if loan_info.loan_pay_mode == 2>
+                            <div id="other_loan_pay_mode_2" style="">
+                                <div data_type="input" class="loan_entrust_pay_date_div" style="width:223px;margin-top: 20px;">
+                                    <label>委托支付日期 :</label>
+                                    <input id="loan_entrust_pay_date" type="text" name="loan_entrust_pay_date" value="${loan_db.loan_entrust_pay_date}" />
+                                </div>
+                                <div data_type="input" class="loan_entrust_pay_amount_div" style="width:225px;">
+                                    <label>委托支付金额 :</label>
+                                    <input id="loan_entrust_pay_amount" type="text" name="loan_entrust_pay_amount" value="${loan_db.loan_entrust_pay_amount}" />
+                                    <span>元</span>
+                                </div>
+                                <div data_type="input" class="loan_entrust_pay_payee_div" style="width:460px;">
+                                    <label>委托支付收款单位 :</label>
+                                    <input id="loan_entrust_pay_payee" type="text" name="loan_entrust_pay_payee" value="${loan_db.loan_entrust_pay_payee}" />
+                                </div>
+                                <div data_type="input" class="loan_entrust_pay_receipt_account_div" style="width:460px;">
+                                    <label>委托支付收款账号 :</label>
+                                    <input id="loan_entrust_pay_receipt_account" type="text" name="loan_entrust_pay_receipt_account" value="${loan_db.loan_entrust_pay_receipt_account}" />
+                                </div>
+                                <div data_type="input" class="loan_entrust_pay_receipt_deposit_div" style="width:460px;">
+                                    <label>委托支付收款开户行 :</label>
+                                    <input id="loan_entrust_pay_receipt_deposit" type="text" name="loan_entrust_pay_receipt_deposit" value="${loan_db.loan_entrust_pay_receipt_deposit}" />
+                                </div>
                             </div>
-                            <div data_type="input" class="loan_entrust_pay_amount_div" style="width:225px;">
-                                <label>委托支付金额 :</label>
-                                <input id="loan_entrust_pay_amount" type="text" name="loan_entrust_pay_amount" value="15000" />
-                                <span>元</span>
-                            </div>
-                            <div data_type="input" class="loan_entrust_pay_payee_div" style="width:460px;">
-                                <label>委托支付收款单位 :</label>
-                                <input id="loan_entrust_pay_payee" type="text" name="loan_entrust_pay_payee" value="上海有限公司" />
-                            </div>
-                            <div data_type="input" class="loan_entrust_pay_receipt_account_div" style="width:460px;">
-                                <label>委托支付收款账号 :</label>
-                                <input id="loan_entrust_pay_receipt_account" type="text" name="loan_entrust_pay_receipt_account" value="622848071823386666" />
-                            </div>
-                            <div data_type="input" class="loan_entrust_pay_receipt_deposit_div" style="width:460px;">
-                                <label>委托支付收款开户行 :</label>
-                                <input id="loan_entrust_pay_receipt_deposit" type="text" name="loan_entrust_pay_receipt_deposit" value="农业银行" />
-                            </div>
-                        </div>
+                        </#if>
                         <!--</editor-fold>-->
                     </div>
 
@@ -257,27 +309,27 @@
                     </div>
                     <div data_type="input" class="loan_apply_time_div" style="width:305px;">
                         <label>申请贷款时间 :</label>
-                        <input id="loan_apply_time"  lay-verify="required" class="date-format" type="text" name="loan_apply_time" value="2021年10月20日" />
+                        <input id="loan_apply_time"  lay-verify="required" class="date-format" type="text" name="loan_apply_time" value="${loan_db.loan_apply_time}" />
                     </div>
                     <div data_type="input" class="loan_review_person_num_div" style="width:340px;">
                         <label>贷审会成员数量 :</label>
-                        <input id="loan_review_person_num" lay-verify="required"  type="text" name="loan_review_person_num" value="5" />
+                        <input id="loan_review_person_num" lay-verify="required"  type="text" name="loan_review_person_num" value="${loan_db.loan_review_person_num}" />
                     </div>
                     <div data_type="input" class="loan_approve_time_div" style="width:305px;">
                         <label>审批贷款时间 :</label>
-                        <input id="loan_approve_time" lay-verify="required"  class="date-format" type="text" name="loan_approve_time" value="2021年10月25日" />
+                        <input id="loan_approve_time" lay-verify="required"  class="date-format" type="text" name="loan_approve_time" value="${loan_db.loan_approve_time}"/>
                     </div>
                     <div data_type="input" class="loan_contract_date_div" style="width:340px;">
                         <label>合同日期 :</label>
-                        <input id="loan_contract_date" lay-verify="required"  class="date-format" type="text" name="loan_contract_date" value="2021年10月28日" />
+                        <input id="loan_contract_date" lay-verify="required"  class="date-format" type="text" name="loan_contract_date" value="${loan_db.loan_contract_date}" />
                     </div>
                     <div data_type="input" class="loan_steward_responsible_div" style="width:305px;">
                         <label>管户责任人 :</label>
-                        <input id="loan_steward_responsible"  lay-verify="required" type="text" name="loan_steward_responsible" value="刑经理" />
+                        <input id="loan_steward_responsible"  lay-verify="required" type="text" name="loan_steward_responsible" value="${loan_db.loan_steward_responsible}" />
                     </div>
                     <div data_type="input" class="loan_risk_responsible_div" style="width:340px;">
                         <label>风险主责人 :</label>
-                        <input id="loan_risk_responsible" lay-verify="required"  type="text" name="loan_risk_responsible" value="李主任" />
+                        <input id="loan_risk_responsible" lay-verify="required"  type="text" name="loan_risk_responsible" value="${loan_db.loan_risk_responsible}" />
                     </div>
                     <!--</editor-fold>-->
                     <div style="width: 660px;height: 50px;margin-top:10px">
@@ -326,15 +378,16 @@
             //监听提交
             form.on('submit(add)',
                 function(data) {
-                    var isOk;
+                    var isOk,msg;
                     $.ajax({
-                        url:'/loan/add',
+                        url:'/loan/modify',
                         method:'post',
                         data:data.field,
                         async: false,
                         dataType:'JSON',
                         success:function(res){
-                            if(res === 0){
+                            msg = res.msg;
+                            if(res.code === "200"){
                                 isOk = true;
                             }else{
                                 isOk = false;
@@ -344,17 +397,14 @@
 
                         }
                     });
-
-                    if(isOk){
-                        layer.alert("添加成功", {
-                            icon: 6
-                        },
-                        function() {
-                            xadmin.close(); // 关闭当前frame
-                            xadmin.father_reload(); // 可以对父窗口进行刷新
-                        });
-                        return false;
-                    }
+                    layer.alert(msg, {
+                        icon: 6
+                    },
+                    function() {
+                        xadmin.close(); // 关闭当前frame
+                        xadmin.father_reload(); // 可以对父窗口进行刷新
+                    });
+                    return false;
                 });
 
         });

@@ -35,7 +35,7 @@
                     性别：
                 </label>
                 <label class="layui-form-label" style="text-align: left;">
-                    ${(person_info.p_gender!= 1)?string('男', '女')}
+                    ${(person_info.p_gender == 1)?string('男', '女')}
                 </label>
             </div>
             <div class="layui-form-item">
@@ -44,7 +44,7 @@
                        婚姻情况：
                     </label>
                     <label class="layui-form-label" style="text-align: left;">
-                        ${(person_info.p_marital!= 1)?string('已婚', '未婚')}
+                        ${(person_info.p_marital == 1)?string('已婚', '未婚')}
                     </label>
                 </div>
             </div>

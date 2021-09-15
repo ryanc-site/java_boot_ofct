@@ -105,8 +105,8 @@
                                 html += "<td>" + loan.ctime + "</td>";
                                 // html += "<td><a class='layui-btn layui-btn-danger layui-btn-xs' lay-event='del' onclick='loan_del(\""+loan.id+"\")'>删除</a></td>";
                                 html += "<td>" +
-                                            "<a title='查看' onclick='xadmin.open(\"贷款信息\",\"/loan/preadd\",850,600,false)' href='javascript:;'> <i class='layui-icon'>&#xe63c;</i></a>&nbsp;" +
-                                            "<a title='修改' onclick='xadmin.open(\"修改贷款信息\",\"/loan/preadd\",850,600,false)' href='javascript:;'> <i class='layui-icon'>&#xe642;</i></a>&nbsp;" +
+                                            "<a title='查看' onclick='xadmin.open(\"贷款信息\",\"/loan/info/"+loan.id+"\",850,600,false)' href='javascript:;'> <i class='layui-icon'>&#xe63c;</i></a>&nbsp;" +
+                                            "<a title='修改' onclick='xadmin.open(\"修改贷款信息\",\"/loan/premodify/"+loan.id+"\",850,600,false)' href='javascript:;'> <i class='layui-icon'>&#xe642;</i></a>&nbsp;" +
                                             "<a title='导出' onclick='loan_export(\""+loan.id+"\")' href='javascript:;'> <i class='layui-icon'>&#xe601;</i></a>&nbsp;" +
                                             "<a title='删除' onclick='loan_del(\""+loan.id+"\")' href='javascript:;'> <i class='layui-icon'>&#xe640;</i></a>" +
                                         "</td>";
@@ -153,7 +153,7 @@
         }
 
 
-        function loan_export(){
+        function loan_export(loan_id){
             layui.use(['layer'], function () {
                 const layer = layui.layer;
                 layer.open({
@@ -165,12 +165,25 @@
                     btn: ['确定', '取消'],
                     yes: function (index, layero) {
                         //获取输入框里面的值
-                        var closeContent = top.$("#area").val() || $("#area").val();
-                        if (closeContent) {
-                            console.log(closeContent);
-                        }
+                        const export_dir = $("#export_dir").val();
+
+                        //    发起异步请求
+                        $.ajax({
+                            url: "/loan/export",
+                            data: {
+                                "loanId": loan_id,
+                                "exportDir": export_dir
+                            },
+                            async: false,
+                            dataType: "json",
+                            success: function (data) {
+                                layer.alert(data.msg, {
+                                    icon: 6
+                                });
+                                return false;
+                            }
+                        });
                         layer.close(index);
-                        // 在这里提交数据
                     },
                     no: function (index, layero) {
                         layer.close(index);

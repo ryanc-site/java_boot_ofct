@@ -41,6 +41,127 @@
     </insert>
 
     <update id="update" parameterType="site.ryanc.ofct.model.LoanInfo" >
+        update loan
+        <set >
+            <if test="loan_customer_type != null and loan_customer_type != ''" >
+                loan_customer_type = #{loan_customer_type},
+            </if>
+            <if test="loan_assure_type != null and loan_assure_type != ''" >
+                loan_assure_type = #{loan_assure_type},
+            </if>
+            <if test="loan_mode != null and loan_mode != ''" >
+                loan_mode = #{loan_mode},
+            </if>
+            <if test="loan_pay_mode != null and loan_pay_mode != ''" >
+                loan_pay_mode = #{loan_pay_mode},
+            </if>
+            <if test="loan_repay_mode != null and loan_repay_mode != ''" >
+                loan_repay_mode = #{loan_repay_mode},
+            </if>
+            <if test="loan_repay_person != null and loan_repay_person != ''" >
+                loan_repay_person = #{loan_repay_person},
+            </if>
+            <if test="loan_person_carno != null and loan_person_carno != ''" >
+                loan_person_carno = #{loan_person_carno},
+            </if>
+            <if test="loan_account_open_bank != null and loan_account_open_bank != ''" >
+                loan_account_open_bank = #{loan_account_open_bank},
+            </if>
+            <if test="loan_for_use != null and loan_for_use != ''" >
+                loan_for_use = #{loan_for_use},
+            </if>
+            <if test="loan_repay_src != null and loan_repay_src != ''" >
+                loan_repay_src = #{loan_repay_src},
+            </if>
+            <if test="loan_amount_upcase != null and loan_amount_upcase != ''" >
+                loan_amount_upcase = #{loan_amount_upcase},
+            </if>
+            <if test="loan_amount_lowcase != null and loan_amount_lowcase != ''" >
+                loan_amount_lowcase = #{loan_amount_lowcase},
+            </if>
+            <if test="loan_total_credit_amount != null and loan_total_credit_amount != ''" >
+                loan_total_credit_amount = #{loan_total_credit_amount},
+            </if>
+            <if test="loan_rate_plus_point != null and loan_rate_plus_point != ''" >
+                loan_rate_plus_point = #{loan_rate_plus_point},
+            </if>
+            <if test="loan_term != null and loan_term != ''" >
+                loan_term = #{loan_term},
+            </if>
+            <if test="loan_start_date != null and loan_start_date != ''" >
+                loan_start_date = #{loan_start_date},
+            </if>
+            <if test="loan_end_date != null and loan_end_date != ''" >
+                loan_end_date = #{loan_end_date},
+            </if>
+            <if test="loan_m_rate != null and loan_m_rate != ''" >
+                loan_m_rate = #{loan_m_rate},
+            </if>
+            <if test="Loan_main_contractno != null and Loan_main_contractno != ''" >
+                Loan_main_contractno = #{Loan_main_contractno},
+            </if>
+            <if test="loan_sub_contractno != null and loan_sub_contractno != ''" >
+                loan_sub_contractno = #{loan_sub_contractno},
+            </if>
+            <if test="loan_assure_person != null and loan_assure_person != ''" >
+                loan_assure_person = #{loan_assure_person},
+            </if>
+            <if test="loan_assure_person_gender != null and loan_assure_person_gender != ''" >
+                loan_assure_person_gender = #{loan_assure_person_gender},
+            </if>
+            <if test="loan_person_address != null and loan_person_address != ''" >
+                loan_person_address = #{loan_person_address},
+            </if>
+            <if test="loan_person_id != null and loan_person_id != ''" >
+                loan_person_id = #{loan_person_id},
+            </if>
+            <if test="loan_this_start_date != null and loan_this_start_date != ''" >
+                loan_this_start_date = #{loan_this_start_date},
+            </if>
+            <if test="loan_this_end_date != null and loan_this_end_date != ''" >
+                loan_this_end_date = #{loan_this_end_date},
+            </if>
+            <if test="loan_this_months != null and loan_this_months != ''" >
+                loan_this_months = #{loan_this_months},
+            </if>
+            <if test="loan_special_prod_type != null and loan_special_prod_type != ''" >
+                loan_special_prod_type = #{loan_special_prod_type},
+            </if>
+            <if test="loan_borrower_type != null and loan_borrower_type != ''" >
+                loan_borrower_type = #{loan_borrower_type},
+            </if>
+            <if test="loan_entrust_pay_date != null and loan_entrust_pay_date != ''" >
+                loan_entrust_pay_date = #{loan_entrust_pay_date},
+            </if>
+            <if test="loan_entrust_pay_amount != null and loan_entrust_pay_amount != ''" >
+                loan_entrust_pay_amount = #{loan_entrust_pay_amount},
+            </if>
+            <if test="loan_entrust_pay_payee != null and loan_entrust_pay_payee != ''" >
+                loan_entrust_pay_payee = #{loan_entrust_pay_payee},
+            </if>
+            <if test="loan_entrust_pay_receipt_account != null and loan_entrust_pay_receipt_account != ''" >
+                loan_entrust_pay_receipt_account = #{loan_entrust_pay_receipt_account},
+            </if>
+            <if test="loan_entrust_pay_receipt_deposit != null and loan_entrust_pay_receipt_deposit != ''" >
+                loan_entrust_pay_receipt_deposit = #{loan_entrust_pay_receipt_deposit},
+            </if>
+            <if test="loan_apply_time != null and loan_apply_time != ''" >
+                loan_apply_time = #{loan_apply_time},
+            </if>
+            <if test="loan_review_person_num != null and loan_review_person_num != ''" >
+                loan_review_person_num = #{loan_review_person_num},
+            </if>
+            <if test="loan_contract_date != null and loan_contract_date != ''" >
+                loan_contract_date = #{loan_contract_date},
+            </if>
+            <if test="loan_steward_responsible != null and loan_steward_responsible != ''" >
+                loan_steward_responsible = #{loan_steward_responsible},
+            </if>
+            <if test="loan_risk_responsible != null and loan_risk_responsible != ''" >
+                loan_risk_responsible = #{loan_risk_responsible},
+            </if>
+        </set>
+        where id = #{id}
     </update>
 
     <delete id="delete" parameterType="java.lang.String" >

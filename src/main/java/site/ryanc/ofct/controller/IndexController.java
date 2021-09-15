@@ -75,7 +75,7 @@ public class IndexController {
                 break;
             }
             case "loan_mgr":{
-                mav = new ModelAndView("loan/info");
+                mav = new ModelAndView("loan/list");
                 break;
             }
         }

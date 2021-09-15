@@ -1,6 +1,7 @@
 package site.ryanc.ofct.service.impl;
 
 import cn.afterturn.easypoi.word.WordExportUtil;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -18,10 +19,7 @@ import site.ryanc.ofct.service.LoanService;
 
 import javax.annotation.Resource;
 import java.io.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static site.ryanc.ofct.common.consts.Constant.*;
 
@@ -56,6 +54,7 @@ public class LoanServiceImpl extends BaseServiceImpl<LoanInfo,String> implements
 
     @Override
     public void export(PersonCustomer csrForLoanFromDb, LoanInfo loan_db, String exportDir) throws Exception {
+        String exportDirGroup = parseExportDirGroup(loan_db,exportDir);
         Map<String,String> replaceFileMap = new HashMap<>();
         replaceFileMap.putAll(template_base_Map);
         // 贷款方式 - 对应文件列表
@@ -96,12 +95,12 @@ public class LoanServiceImpl extends BaseServiceImpl<LoanInfo,String> implements
                 throw new Exception(entry.getKey() + "导出异常：" + e.getMessage());
             }
             // 输出目标文件
-            File file = new File(exportDir);
+            File file = new File(exportDirGroup);
             //如果文件夹不存在则创建
             if (!file.exists()) {
                 FileUtil.mkdir(file);
             }
-            String targetPath_A = exportDir + "/" + entry.getValue();
+            String targetPath_A = exportDirGroup + "/" + entry.getValue();
             OutputStream targetOS_A = new FileOutputStream(targetPath_A);
             targetDoc.write(targetOS_A);
             // 关闭流
@@ -109,6 +108,20 @@ public class LoanServiceImpl extends BaseServiceImpl<LoanInfo,String> implements
             log.info("file handl successfully.result file in  =====>" + targetPath_A + " )");
         }
     }
+
+    private String parseExportDirGroup( LoanInfo loan_db, String exportDir) {
+        String exportDirGroup = "";
+        // 客户名称
+        exportDirGroup += exportDir + "/" + loan_db.getLoan_repay_person() + "_";
+        // 拼接贷款类型
+        exportDirGroup += display_Loan_assure_type(loan_db.getLoan_assure_type()) + "_"+
+                display_Loan_pay_mode(loan_db.getLoan_pay_mode()) + "_" +
+                display_loan_type(loan_db.getLoan_mode()) + "_";
+        // 拼接一个时间戳
+        exportDirGroup += DateUtil.formatTime(new Date()).replace(":","-");
+        return exportDirGroup;
+    }
+
     /**
      * 创建文本占位符需要替换的内容
      *
@@ -233,6 +246,29 @@ public class LoanServiceImpl extends BaseServiceImpl<LoanInfo,String> implements
         return result;
     }
 
+
+
+    // 贷款方式 ：1 - 一次性；2 - 循环； 3 - 特色产品；
+    private  String display_loan_type(Integer type) {
+        String result = "";
+        switch (type) {
+            case 1: {
+                result = "一次性";
+                break;
+            }
+            case 2: {
+                result = "循环";
+                break;
+            }
+            case 3: {
+                result = "特色产品";
+                break;
+            }
+        }
+        return result;
+    }
+
+    // 还款方式 ：1 - 等额本息；2 - 等额本金； 3 - 按月结息；4 - 到期还本、计划还款；
     private  String display_Loan_repay_mode(Integer type) {
         String result = "";
         switch (type) {
@@ -256,6 +292,7 @@ public class LoanServiceImpl extends BaseServiceImpl<LoanInfo,String> implements
         return result;
     }
 
+    // 保证方式 ：1 - 抵押；2 - 保证； 3 - 信用；4 - 质押；
     private  String display_Loan_assure_type(Integer type) {
         String result = "";
         switch (type) {
@@ -279,6 +316,7 @@ public class LoanServiceImpl extends BaseServiceImpl<LoanInfo,String> implements
         return result;
     }
 
+    //支付方式 ：1 - 自主支付；2 - 委托支付；
     private  String display_Loan_pay_mode(Integer type) {
         String result = "";
         switch (type) {
@@ -294,6 +332,7 @@ public class LoanServiceImpl extends BaseServiceImpl<LoanInfo,String> implements
         return result;
     }
 
+    //性别 ：1 - 男；2 - 女；
     private  String display_gender(Integer type) {
         String result = "";
         switch (type) {

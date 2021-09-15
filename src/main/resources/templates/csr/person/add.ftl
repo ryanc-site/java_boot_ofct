@@ -212,7 +212,7 @@
 
                         }
                     });
-                    layer.alert("msg", {
+                    layer.alert(msg, {
                         icon: 6
                     },
                     function() {

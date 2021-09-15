@@ -5,6 +5,8 @@ import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import site.ryanc.ofct.model.LoanInfo;
@@ -14,10 +16,8 @@ import site.ryanc.ofct.service.LoanService;
 import site.ryanc.ofct.service.P_customerService;
 
 import javax.annotation.Resource;
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * +--------------------------------+ <br>
@@ -83,8 +83,50 @@ public class LoanMgrController {
             log.error("【loan-add】：新增异常！e-msg:{}", e.getMessage());
             return new ResCom<String>("500", "【loan-add】：新增异常！e-msg:{}", null);
         }
+        return new ResCom<String>("200", "新增成功", null);
+    }
+
+
+    @RequestMapping("/info/{loanId}")
+    public String csrInfo(@PathVariable String loanId, Model model) {
+        LoanInfo loan_info = loanService.getById(loanId);
+        model.addAttribute("loan_info", loan_info);
+        return "loan/info";
+    }
+
+
+    /**
+     * 贷款数据 - 预修改
+     *
+     * @param loan_id 贷款信息id
+     * @return 返回修改view
+     */
+    @RequestMapping("/premodify/{loan_id}")
+    public String preModify(@PathVariable String loan_id, Model model) {
+        LoanInfo loan_db = loanService.getById(loan_id);
+        model.addAttribute("loan_db", loan_db);
+        return "loan/modify";
+    }
+
+
+    /**
+     * 修改 - 贷款 - 数据
+     *
+     * @param loanInfo 待修改数据
+     * @return 操作结果
+     */
+    @RequestMapping("/modify")
+    @ResponseBody
+    public ResCom<String> modify(LoanInfo loanInfo) {
+        try {
+            loanService.update(loanInfo);
+        } catch (Exception e) {
+            log.error("【loan-modify】：loan_id:{},修改异常！e-msg:{}", loanInfo.getId(), e.getMessage());
+            return new ResCom<String>("500", "【loan-modify】：loan_id:{" + loanInfo.getId() + "},修改异常！", null);
+        }
         return new ResCom<String>("200", "修改成功", null);
     }
+
 
     /**
      * 删除 - 贷款数据
