@@ -46,7 +46,7 @@ public class LoanInfo {
     private String loan_amount_lowcase;
     /** 总授信金额 */
     private String loan_total_credit_amount;
-    /** 贷款利率加点 */
+    /** LPR利率加点 */
     private String loan_rate_plus_point;
     /** 贷款期限 */
     private Integer loan_term;

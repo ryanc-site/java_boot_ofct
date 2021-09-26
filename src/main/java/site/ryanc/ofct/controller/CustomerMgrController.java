@@ -165,8 +165,15 @@ public class CustomerMgrController {
     @RequestMapping("/import/{csr_type}")
     @ResponseBody
     public ResCom<String> csrImport(@PathVariable String csr_type, MultipartFile import_file) {
+        String fileName = import_file.getOriginalFilename();
         try {
-            System.out.println("执行word内容抓取工作");
+            if (fileName.toLowerCase().endsWith("docx")) {
+                PersonCustomer personCustomer = p_customerService.importCsr(csr_type, import_file);
+                p_customerService.save(personCustomer);
+            }else{
+                log.error("【csr-import】：导入异常！e-msg:目前只支持”.docx“类型文档，谢谢！");
+                return new ResCom<String>("500", "【csr-import】：导入异常！e-msg:{目前只支持”.docx“类型文档，谢谢！}", null);
+            }
         } catch (Exception e) {
             log.error("【csr-import】：导入异常！e-msg:{}", e.getMessage());
             return new ResCom<String>("500", "【csr-import】：导入异常！e-msg:{}", null);

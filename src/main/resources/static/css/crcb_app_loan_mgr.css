@@ -73,10 +73,20 @@
 .loan_total_credit_amount_div label{margin-top:10px}
 .loan_total_credit_amount_div input{width:100px;margin: 5px 0px 0px -10px;}
 
-/* 贷款利率加点 */
-.loan_rate_plus_point_div{margin:-38px 0px 0px 382px}
+/* LPR利率加点 */
+.loan_rate_plus_point_div{margin:0px 0px 0px -428px}
 .loan_rate_plus_point_div label{margin-top:10px}
 .loan_rate_plus_point_div input{width:80px;margin: 5px 0px 0px -10px;}
+
+/* 贷款年利率 */
+.loan_y_rate_div{margin:-38px 0px 0px -30px}
+.loan_y_rate_div label{margin-top:10px}
+.loan_y_rate_div input{width:100px;margin: 5px 0px 0px -10px;}
+
+/* 贷款月利率 */
+.loan_m_rate_div{margin:-40px 0px 0px 355px}
+.loan_m_rate_div label{margin-top:10px}
+.loan_m_rate_div input{width:100px;margin: 5px 0px 0px -10px;}
 
 /* 贷款期限 */
 .loan_term_div{margin:5px 0px 0px -428px}
@@ -93,18 +103,15 @@
 .loan_end_date_div label{margin-top:10px}
 .loan_end_date_div input{width:120px;margin: 2px 0px 0px -10px;}
 
-/* 贷款月利率 */
-.loan_m_rate_div{margin:0px 0px 0px -429px}
-.loan_m_rate_div label{margin-top:10px}
-.loan_m_rate_div input{width:100px;margin: 5px 0px 0px -10px;}
+
 
 /* 主合同号 */
-.loan_main_contractno_div{margin:-38px 0px 0px 30px}
+.loan_main_contractno_div{margin:0px 0px 0px -430px}
 .loan_main_contractno_div label{margin-top:10px}
 .loan_main_contractno_div input{width:120px;margin: 2px 0px 0px -10px;}
 
 /* 从合同号 */
-.loan_sub_contractno_div{margin:-38px 0px 0px 384px}
+.loan_sub_contractno_div{margin:-38px 0px 0px 7px}
 .loan_sub_contractno_div label{margin-top:10px}
 .loan_sub_contractno_div input{width:120px;margin: 2px 0px 0px -10px;}
 

@@ -150,7 +150,6 @@ public class LoanMgrController {
     public ResCom<String> export(String exportDir, String loanId) {
         try {
             // 参数校验
-
             if (!ReUtil.isMatch("[a-zA-Z]:(?:[/\\\\][^/\\\\:*?\"<>|]{1,255})+", exportDir)) {
                 log.error("【loan-export】：导出失败！e-msg:导出目录{}不合法！", exportDir);
                 return new ResCom<String>("500", "【loan-export】：导出失败！e-msg:导出目录{" + exportDir + "}不合法！", null);

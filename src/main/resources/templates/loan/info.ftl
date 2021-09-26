@@ -105,7 +105,7 @@
                         <label class="layui-form-label"  style="text-align: left;">${loan_info.loan_total_credit_amount} &nbsp;元</label>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">贷款利率加点 :</label>
+                        <label class="layui-form-label">LPR利率加点 :</label>
                         <label class="layui-form-label"  style="text-align: left;">${loan_info.loan_rate_plus_point}</label>
                     </div>
                     <div class="layui-form-item">

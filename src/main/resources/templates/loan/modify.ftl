@@ -156,7 +156,7 @@
                         <span>元</span>
                     </div>
                     <div data_type="input" class="loan_rate_plus_point_div" style="width:215px;">
-                        <label>贷款利率加点 :</label>
+                        <label>LPR利率加点 :</label>
                         <input id="loan_rate_plus_point" lay-verify="required"  type="text" name="loan_rate_plus_point" value="${loan_db.loan_rate_plus_point}" />
                     </div>
                     <div data_type="input" class="loan_term_div" style="width:215px;">

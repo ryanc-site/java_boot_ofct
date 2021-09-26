@@ -1,6 +1,7 @@
 package site.ryanc.ofct.service;
 
 import com.github.pagehelper.PageInfo;
+import org.springframework.web.multipart.MultipartFile;
 import site.ryanc.ofct.model.PersonCustomer;
 
 import java.util.List;
@@ -32,4 +33,11 @@ public interface P_customerService extends BaseService<PersonCustomer, String> {
      * @return 客户信息
      */
     PersonCustomer getByCsrName(String csr_name);
+
+    /**
+     * 客户信息导入
+     * @param csr_type 客户类型
+     * @param import_file 导入文件
+     */
+    PersonCustomer importCsr(String csr_type, MultipartFile import_file) throws Exception;
 }

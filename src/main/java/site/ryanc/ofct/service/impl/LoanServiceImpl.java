@@ -58,9 +58,18 @@ public class LoanServiceImpl extends BaseServiceImpl<LoanInfo,String> implements
         Map<String,String> replaceFileMap = new HashMap<>();
         replaceFileMap.putAll(template_base_Map);
         // 贷款方式 - 对应文件列表
-        if(loan_db.getLoan_mode() == 2){
+        if(loan_db.getLoan_mode() == 1){
+            // 加入 一次性 对应的文件列表
+            if(loan_db.getLoan_assure_type() == 2){ // 保证类特殊表格
+                replaceFileMap.putAll(template_one_time_loan_ext_map);
+            }
+
+        } else if(loan_db.getLoan_mode() == 2){
             // 加入 循环 对应的文件列表
             replaceFileMap.putAll(template_loop_mode_loan_map);
+            if(loan_db.getLoan_assure_type() == 2){ // 保证类特殊表格
+                replaceFileMap.putAll(template_loop_loan_ensure_ext_map);
+            }
         }else if(loan_db.getLoan_mode() == 3){
             // 加入 特色产品 对应的文件列表
             replaceFileMap.putAll(template_special_prod_loan_map);
@@ -77,7 +86,7 @@ public class LoanServiceImpl extends BaseServiceImpl<LoanInfo,String> implements
         Set<Map.Entry<String, String>> entries = replaceFileMap.entrySet();
         for (Map.Entry<String, String> entry : entries) {
             // 获取模板文件
-            String templatePath_A = ofct_boot.class.getResource("/").getPath() + "/template/" + entry.getKey();
+            String templatePath_A = System.getProperty("user.dir") + "/template/" + entry.getKey();
             File templateFile_A = new File(templatePath_A);
 
             // 读取模板

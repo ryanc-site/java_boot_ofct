@@ -117,12 +117,22 @@
                         <span>元</span>
                     </div>
                     <div data_type="input" class="loan_rate_plus_point_div" style="width:215px;">
-                        <label>贷款利率加点 :</label>
-                        <input id="loan_rate_plus_point" lay-verify="required"  type="text" name="loan_rate_plus_point" value="300" />
+                        <label>LPR利率加点 :</label>
+                        <input id="loan_rate_plus_point" lay-verify="required|z_integer"  type="text" name="loan_rate_plus_point" value="300" />
+                    </div>
+                    <div data_type="input" class="loan_y_rate_div" style="width:215px;">
+                        <label>贷款年利率 :</label>
+                        <input id="loan_y_rate" lay-verify="required" readonly disabled  type="text"  value="5.708" />
+                        <span>‰</span>
+                    </div>
+                    <div data_type="input" class="loan_m_rate_div" style="width:215px;">
+                        <label>贷款月利率 :</label>
+                        <input id="loan_m_rate" lay-verify="required" readonly disabled  type="text" name="loan_m_rate" value="5.708" />
+                        <span>‰</span>
                     </div>
                     <div data_type="input" class="loan_term_div" style="width:215px;">
                         <label>贷款期限 :</label>
-                        <input id="loan_term" type="text"  lay-verify="required" name="loan_term" value="24" />
+                        <input id="loan_term" type="text"  lay-verify="required|z_integer" name="loan_term" value="24" />
                         <span>个月</span>
                     </div>
                     <div data_type="input" class="loan_start_date_div" style="width:245px;">
@@ -133,11 +143,7 @@
                         <label>贷款终止日期 :</label>
                         <input id="loan_end_date" lay-verify="required"  class="date-format" type="text" name="loan_end_date" value="2023年10月28日" />
                     </div>
-                    <div data_type="input" class="loan_m_rate_div" style="width:215px;">
-                        <label>贷款月利率 :</label>
-                        <input id="loan_m_rate" lay-verify="required"  type="text" name="loan_m_rate" value="5.708" />
-                        <span>‰</span>
-                    </div>
+
                     <div data_type="input" class="loan_main_contractno_div" style="width:215px;">
                         <label>主合同号 :</label>
                         <input id="loan_main_contractno" lay-verify="required"  type="text" name="loan_main_contractno" value="ht-202108281" />
@@ -293,7 +299,8 @@
             </form>
     </div>
 </div>
-<script>layui.use(['form', 'laydate','layer','jquery'],
+<script>
+    layui.use(['form', 'laydate','layer','jquery'],
         function() {
             $ = layui.jquery;
             var form = layui.form,laydate = layui.laydate,layer = layui.layer;
@@ -310,6 +317,10 @@
 
             //自定义验证规则
             form.verify({
+                z_integer:[
+                    /^[1-9]\d*$/
+                    ,'只能是整数!'
+                ]
                 // nikename: function(value) {
                 //     if (value.length < 5) {
                 //         return '昵称至少得5个字符啊';
@@ -367,11 +378,14 @@
         var loan_mode_ele = document.getElementById("loan_mode");
         var loan_pay_mode_ele = document.getElementById("loan_pay_mode");
 
-        if(loan_customer_type_ele.value === '-1'
-            || loan_assure_type_ele.value === '-1'
-            || loan_mode_ele.value === '-1'
-            || loan_pay_mode_ele.value === '-1'){
-            $('.tips').html('请选择类型！').addClass('tips-warn').fadeIn().delay(1500).fadeOut();
+        if(loan_customer_type_ele.value === ''
+            || loan_assure_type_ele.value === ''
+            || loan_mode_ele.value === ''
+            || loan_pay_mode_ele.value === ''){
+            layer.msg('请选择对应类型！', {
+                 time: 2000, //2s后自动关闭
+            });
+            return false;
         }else if(loan_customer_type_ele.value === '1'
             && loan_assure_type_ele.value === '2'
             && loan_mode_ele.value === '1'
@@ -395,6 +409,7 @@
             $('#loan_to_be_dev').show();
         }
     }
+
     // 显示 - 其他信息 - 贷款方式
     function display_other_loan_mode(type){
         var isOk = false;
@@ -474,6 +489,14 @@
             }
         }
     }
+
+    $('#loan_rate_plus_point').change(function(){
+        const lpr_val = $('#loan_rate_plus_point').val();
+        let y_rate = 3.85 + lpr_val / 100;
+        $('#loan_y_rate').val(y_rate.toFixed(2));
+        let m_rate = y_rate / 12 * 10;
+        $('#loan_m_rate').val(m_rate.toFixed(2));
+    });
 
 </script>
 </body>
